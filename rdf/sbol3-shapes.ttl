@@ -24,3 +24,12 @@ shacl:DisplayIdShape
 		sh:datatype xsd:string ;
 	] ;
 .
+
+shacl:ComponentHasFeatureShape
+	a sh:NodeShape ;
+	sh:targetClass sbol:Component ;
+	sh:property [
+		sh:path sbol:hasFeature ;
+		sh:class sbol:Feature ;
+	] ;
+.

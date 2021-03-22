@@ -19,7 +19,7 @@ class ShaclValidator:
         # self.g.parse(abs_path('rdf/opil.ttl'), format='ttl')
         # self.g.parse(abs_path('rdf/sd2.ttl'), format='ttl')
         # self.g.parse(abs_path('rdf/om-2.0.rdf'))
-        # self.g.parse(abs_path('rdf/opil-shacl.shapes.ttl'), format='ttl')
+        self.g.parse(abs_path('rdf/sbol3-shapes.ttl'), format='ttl')
 
     def main(self):
 

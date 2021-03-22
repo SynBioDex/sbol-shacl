@@ -1,0 +1,26 @@
+@prefix om: <http://www.ontology-of-units-of-measure.org/resource/om-2/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix shacl: <http://sbols.org/v3/shacl#> .
+@prefix sbol: <http://sbols.org/v3#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+<http://sbols.org/v3> sh:declare sbol:PrefixDeclaration .
+
+sbol:PrefixDeclaration
+  a sh:PrefixDeclaration ;
+  sh:namespace "http://sbols.org/v3#"^^xsd:anyURI ;
+  sh:prefix "sbol" ;
+.
+
+shacl:DisplayIdShape
+	a sh:NodeShape ;
+	sh:targetClass sbol:Identified ;
+	sh:property [
+		sh:path sbol:displayId ;
+		sh:maxCount 1 ;
+		sh:datatype xsd:string ;
+	] ;
+.

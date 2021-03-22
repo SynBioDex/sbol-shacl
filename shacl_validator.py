@@ -4,7 +4,7 @@ import os
 import posixpath
 
 from pyshacl import validate
-from rdflib import Graph
+import rdflib
 
 
 def abs_path(relative_path):  # Expand path based on module installation directory
@@ -14,20 +14,21 @@ def abs_path(relative_path):  # Expand path based on module installation directo
 class ShaclValidator:
 
     def __init__(self):
-        self.g = Graph()
+        self.g = rdflib.Graph()
         self.g.parse(abs_path('rdf/sbol3.ttl'), format='ttl')
         # self.g.parse(abs_path('rdf/opil.ttl'), format='ttl')
         # self.g.parse(abs_path('rdf/sd2.ttl'), format='ttl')
         # self.g.parse(abs_path('rdf/om-2.0.rdf'))
         self.g.parse(abs_path('rdf/sbol3-shapes.ttl'), format='ttl')
 
-    def main(self):
+    def main(self, infile):
 
         # Load Turtle files into a RDF graph
         print('Loading RDF files...')
 
         # self.g.parse('rdf/TimeSeriesProtocol.ttl', format='ttl')
-        self.g.parse(abs_path('TimeSeriesHTC.ttl'), format='ttl')
+        rdf_format = rdflib.util.guess_format(infile)
+        self.g.parse(infile, format=rdf_format)
         # self.g.parse('rdf/YeastSTATES_1.0_Time_Series_Round_1.ttl', format='ttl')
         # self.g.parse('rdf/TestER.ttl', format='ttl')
 
@@ -67,8 +68,7 @@ class ShaclValidator:
 
 def parse_args(args=None):
     parser = argparse.ArgumentParser()
-    parser.add_argument("infile", type=argparse.FileType('r'),
-                        metavar="SBOL3_FILE")
+    parser.add_argument("infile", metavar="SBOL3_FILE")
     parser.add_argument('-d', '--debug', action='store_true')
     args = parser.parse_args(args)
     return args
@@ -88,7 +88,7 @@ def main(argv=None):
     init_logging(args.debug)
 
     validator = ShaclValidator()
-    validator.main()
+    validator.main(args.infile)
 
 
 if __name__ == '__main__':

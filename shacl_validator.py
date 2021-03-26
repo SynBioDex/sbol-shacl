@@ -8,7 +8,7 @@ import rdflib
 
 
 def abs_path(relative_path):  # Expand path based on module installation directory
-    return posixpath.join(os.path.dirname(os.path.realpath(__file__)), relative_path)
+    return os.path.join(os.path.dirname(os.path.realpath(__file__)), relative_path)
 
 
 class ShaclValidator:
@@ -16,9 +16,6 @@ class ShaclValidator:
     def __init__(self):
         self.g = rdflib.Graph()
         self.g.parse(abs_path('rdf/sbol3.ttl'), format='ttl')
-        # self.g.parse(abs_path('rdf/opil.ttl'), format='ttl')
-        # self.g.parse(abs_path('rdf/sd2.ttl'), format='ttl')
-        # self.g.parse(abs_path('rdf/om-2.0.rdf'))
         self.g.parse(abs_path('rdf/sbol3-shapes.ttl'), format='ttl')
 
     def main(self, infile):
@@ -33,9 +30,9 @@ class ShaclValidator:
         # self.g.parse('rdf/TestER.ttl', format='ttl')
 
         # Do the validation
-        print('Validating graph...')
+        logging.debug('Running validation rules')
         conforms, results_graph, results_text = \
-            validate(self.g, shacl_graph=None, ont_graph=None, inference='rdfs',
+            validate(self.g, shacl_graph=None, ont_graph=None,  # inference='rdfs',
                      abort_on_error=False, meta_shacl=False,
                      advanced=True, debug=False)
 

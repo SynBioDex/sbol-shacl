@@ -31,5 +31,18 @@ shacl:ComponentHasFeatureShape
 	sh:property [
 		sh:path sbol:hasFeature ;
 		sh:class sbol:Feature ;
+		sh:message "Values of Component.hasFeature must be Features" ;
+	] ;
+.
+# We'll want to generate rules like this for min/max count
+# as well as literal type (int, bool, URI, etc.) or
+# nodeKind for object properties
+shacl:ComponentTypeShape
+	a sh:NodeShape ;
+	sh:targetClass sbol:Component ;
+	sh:property [
+		sh:path sbol:type ;
+		sh:minCount 1 ;
+		sh:nodeKind sh:IRI ;
 	] ;
 .

@@ -1,26 +1,36 @@
 import argparse
 import logging
 import sys
+from urllib.parse import urljoin
 
 import pyshacl
 import rdflib
 
-# OWL2SH = 'https://raw.githubusercontent.com/sparna-git/owl2shacl/main/owl2sh-open.ttl'
-OWL2SH = 'https://raw.githubusercontent.com/sparna-git/owl2shacl/main/owl2sh-semi-closed.ttl'
+GITHUB_RAW = 'https://raw.githubusercontent.com/'
 
-# Closed has 2 problems:
-#   * It doesn't generate properly - it lacks in rdf namespace declaration and I don't know why
-#   * It generates lots of errors on our files which we probably don't want.
-# OWL2SH = 'https://raw.githubusercontent.com/sparna-git/owl2shacl/main/owl2sh-closed.ttl'
-SBOL3_OWL = 'https://raw.githubusercontent.com/SynBioDex/sbol_factory/master/sbol_factory/rdf/sbol3.ttl'
-SBOL3_OWL = 'rdf/sbol3.ttl'
+# We use the semi-closed version of owl2sh. owl2sh-open and
+# owl2sh-closed do not work well for SBOL3.
+OWL2SH = urljoin(GITHUB_RAW,
+                 '/sparna-git/owl2shacl/main/owl2sh-semi-closed.ttl')
+
+# SBOL 3 Ontology
+# ---------------
+# Default to the version stored at sbol_factory. This one is incomplete
+# as of May, 2021. Update this location when there is a canonical SBOL3
+# ontology stored somewhere.
+SBOL3_OWL = urljoin(GITHUB_RAW,
+                    'SynBioDex/sbol_factory/master/sbol_factory/rdf/sbol3.ttl')
+
 
 def parse_args(args=None):
     parser = argparse.ArgumentParser()
-    # parser.add_argument("infile", metavar="SBOL3_FILE")
+    # Don't use argparse.FileType('r') because input can be a URL
+    # rdflib.Graph.parse automatically handles URLs and filenames
+    parser.add_argument('input', metavar='SBOL3_ONTOLOGY',
+                        default=SBOL3_OWL)
     parser.add_argument('-d', '--debug', action='store_true')
     parser.add_argument('-o', '--output', type=argparse.FileType('w'),
-                        default=sys.stdout)
+                        default=sys.stdout, metavar='SHACL_RULE_FILE')
     args = parser.parse_args(args)
     return args
 
@@ -38,39 +48,36 @@ def main(argv=None):
     args = parse_args(argv)
     init_logging(args.debug)
 
-    # Load the owl-to-shacle rules file
+    # Load the owl-to-shacl rules file
     rules_graph = rdflib.Graph()
+    logging.debug('Loading owl to shacl rules from %s', OWL2SH)
     rules_graph.parse(OWL2SH,
                       format=rdflib.util.guess_format(OWL2SH))
 
     # Load the OWL file
     owl_graph = rdflib.Graph()
-    owl_graph.parse(SBOL3_OWL,
-                    format=rdflib.util.guess_format(SBOL3_OWL))
+    owl_format = rdflib.util.guess_format(args.input)
+    logging.debug('Loading SBOL3 ontology from %s', args.input)
+    owl_graph.parse(args.input, format=owl_format)
 
-    # data_graph = rdflib.Graph()
-    # data_graph += owl_graph
-
-    r = pyshacl.validate(owl_graph,
-                         shacl_graph=rules_graph,
-                         ont_graph=None,
-                         # inference='rdfs',
-                         abort_on_error=False,
-                         meta_shacl=False,
-                         advanced=True,
-                         debug=True,
-                         inplace=True)
-    # TODO: Check results here
-    # data_graph -= owl_graph
-    # for prefix, namespace in rules_graph.namespaces():
-    #     logging.debug(f'Binding {prefix} to {namespace}')
-    #     data_graph.namespace_manager.bind(prefix, namespace)
+    result = pyshacl.validate(owl_graph,
+                              shacl_graph=rules_graph,
+                              ont_graph=None,
+                              # inference='rdfs',
+                              abort_on_error=False,
+                              meta_shacl=False,
+                              advanced=True,
+                              debug=True,
+                              inplace=True)
+    # Unpack pyshacl.validate's return tuple
+    conforms, results_graph, results_text = result
+    if not conforms:
+        logging.error('Unable to generate shacl rules.')
+        logging.error(results_text)
+        return
     owl_graph.namespace_manager.bind('dash', 'http://datashapes.org/dash#')
     owl_graph.namespace_manager.bind('sh', 'http://www.w3.org/ns/shacl#')
-    # data_graph.namespace_manager.bind('rdf', str(rdflib.RDF))
     output = owl_graph.serialize(format='ttl')
-    # args.output.write('@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .')
-    # args.output.write(os.linesep)
     args.output.write(output.decode('utf8'))
 
 

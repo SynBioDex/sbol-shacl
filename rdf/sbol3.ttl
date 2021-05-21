@@ -7,6 +7,8 @@
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix sbol: <http://sbols.org/v3#> .
+@prefix om: <http://www.ontology-of-units-of-measure.org/resource/om-2/> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
 @prefix tawny: <http://www.purl.org/ontolink/tawny#> .
 @prefix xml: <http://www.w3.org/XML/1998/namespace> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
@@ -37,6 +39,11 @@ sbol:Component
   tawny:name "Component"@en ;
   rdfs:label "Component"@en ;
   rdfs:subClassOf sbol:TopLevel ;
+  rdfs:subClassOf [
+      a owl:Restriction ;
+      owl:onProperty sbol:type ;
+      owl:minCardinality 1;
+    ] ;
 .
 sbol:Feature
   a owl:Class ;
@@ -47,8 +54,45 @@ sbol:Identified
   tawny:name "Identified"@en ;
   rdfs:comment "Represents SBOL objects that can be identified uniquely using URIs."@en ;
   rdfs:label "Identified"@en ;
+  rdfs:subClassOf [
+      a owl:Restriction ;
+      owl:onProperty sbol:displayId ;
+      owl:maxCardinality 1;
+    ] ;
+  rdfs:subClassOf [
+      a owl:Restriction ;
+      owl:onProperty sbol:name ;
+      owl:maxCardinality 1;
+    ] ;
+  rdfs:subClassOf [
+      a owl:Restriction ;
+      owl:onProperty sbol:description ;
+      owl:maxCardinality 1;
+    ] ;
 .
 sbol:SubComponent
+  a owl:Class ;
+  rdfs:subClassOf sbol:Feature ;
+.
+sbol:ComponentReference
+  a owl:Class ;
+  rdfs:subClassOf sbol:Feature ;
+  rdfs:subClassOf [
+      a owl:Restriction ;
+      owl:onProperty sbol:hasFeature ;
+      owl:cardinality 1;
+    ] ;
+.
+sbol:LocalSubComponent
+  a owl:Class ;
+  rdfs:subClassOf sbol:Feature ;
+.
+sbol:ExternallyDefined
+  a owl:Class ;
+  rdfs:subClassOf sbol:Feature ;
+  rdfs:subClassOf sbol:Identified ;
+.
+sbol:SequenceFeature
   a owl:Class ;
   rdfs:subClassOf sbol:Feature ;
 .
@@ -71,10 +115,25 @@ sbol:VariableComponent
       owl:someValuesFrom sbol:Component ;
     ] ;
 .
+om:Measure
+  a owl:Class ;
+  rdf:subClassOf sbol:Identified ;
+  rdfs:subClassOf [
+      a owl:Restriction ;
+      owl:onProperty om:hasNumericalValue ;
+      owl:cardinality 1;
+    ] ;
+.
+sbol:hasMeasure
+  a owl:ObjectProperty ;
+  tawny:name "hasMeasure" ;
+  rdfs:label "hasMeasure" ;
+  rdfs:domain sbol:Identified ;
+  rdfs:range om:Measure ;
+.
 sbol:hasFeature
   a owl:ObjectProperty ;
   tawny:name "hasFeature" ;
-  rdfs:domain sbol:Component ;
   rdfs:label "hasFeature" ;
   rdfs:range sbol:Feature ;
 .

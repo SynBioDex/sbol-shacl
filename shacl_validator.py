@@ -1,7 +1,6 @@
 import argparse
 import logging
 import os
-import posixpath
 
 from pyshacl import validate
 import rdflib
@@ -15,7 +14,7 @@ class ShaclValidator:
 
     def __init__(self):
         self.g = rdflib.Graph()
-        self.g.parse(abs_path('rdf/sbol3.ttl'), format='ttl')
+        # self.g.parse(abs_path('rdf/sbol3.ttl'), format='ttl')
         self.g.parse(abs_path('rdf/sbol3-shapes.ttl'), format='ttl')
 
     def main(self, infile):

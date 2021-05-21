@@ -498,7 +498,7 @@
         sbol:orientation  sbol:inline .
 
 <MulticellularSystem/SubComponent2>
-        a                sbol:Component ;
+        a                sbol:SubComponent ;
         sbol:displayId   "SubComponent2" ;
         sbol:instanceOf  :ReceiverSystem .
 

@@ -6,8 +6,12 @@ from pyshacl import validate
 import rdflib
 
 
-def abs_path(relative_path):  # Expand path based on module installation directory
-    return os.path.join(os.path.dirname(os.path.realpath(__file__)), relative_path)
+def abs_path(relative_path):
+    """Expand the given path based on the module installation
+    directory.
+    """
+    module_path = os.path.dirname(os.path.realpath(__file__))
+    return os.path.join(module_path, relative_path)
 
 
 class ShaclValidator:
@@ -15,7 +19,9 @@ class ShaclValidator:
     def __init__(self):
         self.g = rdflib.Graph()
         # self.g.parse(abs_path('rdf/sbol3.ttl'), format='ttl')
-        self.g.parse(abs_path('rdf/sbol3-shapes.ttl'), format='ttl')
+        shacl_path = os.path.join('rdf', 'sbol3-shapes.ttl')
+        rdf_format = rdflib.util.guess_format(shacl_path)
+        self.g.parse(abs_path(shacl_path), format=rdf_format)
 
     def main(self, infile):
 
@@ -25,13 +31,12 @@ class ShaclValidator:
         # self.g.parse('rdf/TimeSeriesProtocol.ttl', format='ttl')
         rdf_format = rdflib.util.guess_format(infile)
         self.g.parse(infile, format=rdf_format)
-        # self.g.parse('rdf/YeastSTATES_1.0_Time_Series_Round_1.ttl', format='ttl')
-        # self.g.parse('rdf/TestER.ttl', format='ttl')
 
         # Do the validation
         logging.debug('Running validation rules')
         conforms, results_graph, results_text = \
-            validate(self.g, shacl_graph=None, ont_graph=None,  # inference='rdfs',
+            validate(self.g, shacl_graph=None, ont_graph=None,
+                     # inference='rdfs',
                      abort_on_error=False, meta_shacl=False,
                      advanced=True, debug=False)
 
@@ -58,8 +63,8 @@ class ShaclValidator:
     def validate(self, graph_to_validate):
         g = graph_to_validate + self.g
         return validate(g, shacl_graph=None, ont_graph=None,
-                        inference='rdfs', abort_on_error=False, meta_shacl=False,
-                        advanced=True, debug=False)
+                        inference='rdfs', abort_on_error=False,
+                        meta_shacl=False, advanced=True, debug=False)
 
 
 def parse_args(args=None):

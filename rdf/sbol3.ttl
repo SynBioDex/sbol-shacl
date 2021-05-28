@@ -30,7 +30,7 @@ sbol:Collection
 sbol:CombinatorialDerivation
   a owl:Class ;
   tawny:name "CombinatorialDerivation"@en ;
-  rdfs:comment "The purpose of the CombinatorialDerivation class is to specify combinatorial genetic designs without having to specify every possible design variant. For example, a CombinatorialDerivation can be used to specify a library of reporter gene variants that include different promoters and RBSs without having to specify a ComponentDefinition for every possible combination of promoter, RBS, and CDS in the library. ComponentDefinition objects that realize a CombinatorialDerivation can be derived in accordance with the class properties template, variableComponents, and strategy."@en ;
+  rdfs:comment "The purpose of the CombinatorialDerivation class is to specify combinatorial genetic designs without having to specify every possible design variant. For example, a CombinatorialDerivation can be used to specify a library of reporter gene variants that include different promoters and RBSs without having to specify a ComponentDefinition for every possible combination of promoter, RBS, and CDS in the library. ComponentDefinition objects that realize a CombinatorialDerivation can be derived in accordance with the class properties template, variableFeatures, and strategy."@en ;
   rdfs:label "CombinatorialDerivation"@en ;
   rdfs:subClassOf sbol:TopLevel ;
 .
@@ -103,16 +103,16 @@ sbol:TopLevel
   rdfs:label "TopLevel"@en ;
   rdfs:subClassOf sbol:Identified ;
 .
-sbol:VariableComponent
+sbol:VariableFeature
   a owl:Class ;
-  tawny:name "VariableComponent"@en ;
-  rdfs:comment "The VariableComponent class can be used to specify a choice of ComponentDefinition objects for any new 35 Component derived from a template Component in the template ComponentDefinition."@en ;
-  rdfs:label "VariableComponent"@en ;
+  tawny:name "VariableFeature"@en ;
+  rdfs:comment "The VariableFeature class can be used to specify a choice of ComponentDefinition objects for any new 35 Component derived from a template Component in the template ComponentDefinition."@en ;
+  rdfs:label "VariableFeature"@en ;
   rdfs:subClassOf sbol:Identified ;
   rdfs:subClassOf [
       a owl:Restriction ;
       owl:onProperty sbol:variable ;
-      owl:someValuesFrom sbol:Component ;
+      owl:someValuesFrom sbol:Feature ;
     ] ;
 .
 om:Measure
@@ -137,10 +137,10 @@ sbol:hasFeature
   rdfs:label "hasFeature" ;
   rdfs:range sbol:Feature ;
 .
-sbol:hasVariableComponent
+sbol:hasVariableFeature
   a owl:ObjectProperty ;
-  tawny:name "hasVariableComponent" ;
-  rdfs:label "hasVariableComponent" ;
+  tawny:name "hasVariableFeature" ;
+  rdfs:label "hasVariableFeature" ;
 .
 sbol:isMemberOf
   a owl:ObjectProperty ;
@@ -175,37 +175,44 @@ sbol:variable
   a owl:FunctionalProperty ;
   a owl:ObjectProperty ;
   tawny:name "variable"@en ;
-  rdfs:domain sbol:VariableComponent ;
+  rdfs:domain sbol:VariableFeature ;
   rdfs:label "variable"@en ;
-  rdfs:range sbol:SubComponent ;
+  rdfs:range sbol:Feature ;
 .
-sbol:variableComponent
+sbol:variableFeature
   a owl:ObjectProperty ;
-  tawny:name "variableComponent"@en ;
+  tawny:name "variableFeature"@en ;
   rdfs:domain sbol:CombinatorialDerivation ;
-  rdfs:label "variableComponent"@en ;
-  rdfs:range sbol:VariableComponent ;
+  rdfs:label "variableFeature"@en ;
+  rdfs:range sbol:VariableFeature ;
 .
 sbol:variant
   a owl:ObjectProperty ;
   tawny:name "variant"@en ;
-  rdfs:domain sbol:VariableComponent ;
+  rdfs:domain sbol:VariableFeature ;
   rdfs:label "variant"@en ;
   rdfs:range sbol:Component ;
 .
 sbol:variantCollection
   a owl:ObjectProperty ;
   tawny:name "variantCollection"@en ;
-  rdfs:domain sbol:VariableComponent ;
+  rdfs:domain sbol:VariableFeature ;
   rdfs:label "variantCollection"@en ;
   rdfs:range sbol:Collection ;
 .
 sbol:variantDerivation
   a owl:ObjectProperty ;
   tawny:name "variantDerivation"@en ;
-  rdfs:domain sbol:VariableComponent ;
+  rdfs:domain sbol:VariableFeature ;
   rdfs:label "variantDerivation"@en ;
   rdfs:range sbol:CombinatorialDerivation ;
+.
+sbol:variantMeasure
+  a owl:ObjectProperty ;
+  tawny:name "variantMeasure"@en ;
+  rdfs:domain sbol:VariableFeature ;
+  rdfs:label "variantMeasure"@en ;
+  rdfs:range om:Measure ;
 .
 tawny:name
   a owl:AnnotationProperty ;

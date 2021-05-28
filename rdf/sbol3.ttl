@@ -112,7 +112,7 @@ sbol:VariableFeature
   rdfs:subClassOf [
       a owl:Restriction ;
       owl:onProperty sbol:variable ;
-      owl:someValuesFrom sbol:Component ;
+      owl:someValuesFrom sbol:Feature ;
     ] ;
 .
 om:Measure
@@ -177,7 +177,7 @@ sbol:variable
   tawny:name "variable"@en ;
   rdfs:domain sbol:VariableFeature ;
   rdfs:label "variable"@en ;
-  rdfs:range sbol:SubComponent ;
+  rdfs:range sbol:Feature ;
 .
 sbol:variableFeature
   a owl:ObjectProperty ;

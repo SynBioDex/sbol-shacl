@@ -26,7 +26,7 @@ def parse_args(args=None):
     parser = argparse.ArgumentParser()
     # Don't use argparse.FileType('r') because input can be a URL
     # rdflib.Graph.parse automatically handles URLs and filenames
-    parser.add_argument('input', metavar='SBOL3_ONTOLOGY',
+    parser.add_argument('input', nargs='?', metavar='SBOL3_ONTOLOGY',
                         default=SBOL3_OWL)
     parser.add_argument('-d', '--debug', action='store_true')
     parser.add_argument('-o', '--output', type=argparse.FileType('w'),

@@ -37,7 +37,7 @@ def parse_args(args=None):
 
 def init_logging(debug=False):
     msg_format = '%(asctime)s %(levelname)s %(message)s'
-    date_format = '%m/%d/%Y %H:%M:%S'
+    date_format = '%Y-%m-%dT%H:%M:%S%z'
     level = logging.INFO
     if debug:
         level = logging.DEBUG
@@ -59,7 +59,7 @@ def main(argv=None):
     owl_format = rdflib.util.guess_format(args.input)
     logging.debug('Loading SBOL3 ontology from %s', args.input)
     owl_graph.parse(args.input, format=owl_format)
-
+    logging.debug('Generating SHACL rules')
     result = pyshacl.validate(owl_graph,
                               shacl_graph=rules_graph,
                               ont_graph=None,
@@ -78,7 +78,12 @@ def main(argv=None):
     owl_graph.namespace_manager.bind('dash', 'http://datashapes.org/dash#')
     owl_graph.namespace_manager.bind('sh', 'http://www.w3.org/ns/shacl#')
     output = owl_graph.serialize(format='ttl')
+    if args.output.name:
+        logging.debug(f'Writing SHACL rules to {args.output.name}')
+    else:
+        logging.debug('Writing SHACL rules')
     args.output.write(output.decode('utf8'))
+    logging.debug(f'Done.')
 
 
 if __name__ == '__main__':

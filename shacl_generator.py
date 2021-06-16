@@ -15,18 +15,18 @@ OWL2SH = urljoin(GITHUB_RAW,
 
 # SBOL 3 Ontology
 # ---------------
-# Default to the version stored at sbol_factory. This one is incomplete
-# as of May, 2021. Update this location when there is a canonical SBOL3
-# ontology stored somewhere.
-SBOL3_OWL = urljoin(GITHUB_RAW,
-                    'SynBioDex/sbol_factory/master/sbol_factory/rdf/sbol3.ttl')
+# Default to the version stored at Goksel Misirli's GitHub. This should
+# eventually move to a more official area, perhaps in the SynBioDex
+# organization. Update this location if it is moved to a canonical
+# location.
+SBOL3_OWL = urljoin(GITHUB_RAW, 'dissys/sbol-owl3/main/sbolowl3.rdf')
 
 
 def parse_args(args=None):
     parser = argparse.ArgumentParser()
     # Don't use argparse.FileType('r') because input can be a URL
     # rdflib.Graph.parse automatically handles URLs and filenames
-    parser.add_argument('input', metavar='SBOL3_ONTOLOGY',
+    parser.add_argument('input', nargs='?', metavar='SBOL3_ONTOLOGY',
                         default=SBOL3_OWL)
     parser.add_argument('-d', '--debug', action='store_true')
     parser.add_argument('-o', '--output', type=argparse.FileType('w'),
@@ -37,7 +37,7 @@ def parse_args(args=None):
 
 def init_logging(debug=False):
     msg_format = '%(asctime)s %(levelname)s %(message)s'
-    date_format = '%m/%d/%Y %H:%M:%S'
+    date_format = '%Y-%m-%dT%H:%M:%S%z'
     level = logging.INFO
     if debug:
         level = logging.DEBUG
@@ -59,7 +59,7 @@ def main(argv=None):
     owl_format = rdflib.util.guess_format(args.input)
     logging.debug('Loading SBOL3 ontology from %s', args.input)
     owl_graph.parse(args.input, format=owl_format)
-
+    logging.debug('Generating SHACL rules')
     result = pyshacl.validate(owl_graph,
                               shacl_graph=rules_graph,
                               ont_graph=None,
@@ -78,7 +78,12 @@ def main(argv=None):
     owl_graph.namespace_manager.bind('dash', 'http://datashapes.org/dash#')
     owl_graph.namespace_manager.bind('sh', 'http://www.w3.org/ns/shacl#')
     output = owl_graph.serialize(format='ttl')
+    if args.output.name:
+        logging.debug(f'Writing SHACL rules to {args.output.name}')
+    else:
+        logging.debug('Writing SHACL rules')
     args.output.write(output.decode('utf8'))
+    logging.debug(f'Done.')
 
 
 if __name__ == '__main__':

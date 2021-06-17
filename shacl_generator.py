@@ -15,11 +15,9 @@ OWL2SH = urljoin(GITHUB_RAW,
 
 # SBOL 3 Ontology
 # ---------------
-# Default to the version stored at Goksel Misirli's GitHub. This should
-# eventually move to a more official area, perhaps in the SynBioDex
-# organization. Update this location if it is moved to a canonical
-# location.
-SBOL3_OWL = urljoin(GITHUB_RAW, 'dissys/sbol-owl3/main/sbolowl3.rdf')
+# Default to canonical SBOL3 Ontology. Users can override the
+# ontology on the command line.
+SBOL3_OWL = urljoin(GITHUB_RAW, 'SynBioDex/sbol-owl3/main/sbolowl3.rdf')
 
 
 def parse_args(args=None):

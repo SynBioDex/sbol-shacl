@@ -15,7 +15,7 @@
                 owl:Restriction ;
             owl:onProperty :source ;
             owl:someValuesFrom owl:Thing ],
-        _:Nf5a648d8783749c1aada31263f1ba447,
+        _:Nf5ddc415597e4016983b7ab32c6b21fc,
         :Identified,
         :TopLevel,
         owl:Thing ;
@@ -31,7 +31,7 @@
         owl:Class,
         sh:NodeShape ;
     rdfs:label "Collection"^^xsd:string ;
-    rdfs:subClassOf _:Nf5a648d8783749c1aada31263f1ba447,
+    rdfs:subClassOf _:Nf5ddc415597e4016983b7ab32c6b21fc,
         :Identified,
         :TopLevel,
         owl:Thing ;
@@ -47,7 +47,7 @@
                 owl:Restriction ;
             owl:onProperty :template ;
             owl:someValuesFrom :Component ],
-        _:Nf5a648d8783749c1aada31263f1ba447,
+        _:Nf5ddc415597e4016983b7ab32c6b21fc,
         :Identified,
         :TopLevel,
         owl:Thing ;
@@ -65,7 +65,7 @@
                 owl:Restriction ;
             owl:onProperty :type ;
             owl:someValuesFrom owl:Thing ],
-        _:Nf5a648d8783749c1aada31263f1ba447,
+        _:Nf5ddc415597e4016983b7ab32c6b21fc,
         :Identified,
         :TopLevel,
         owl:Thing ;
@@ -86,13 +86,13 @@
     rdfs:label "ComponentReference"^^xsd:string ;
     rdfs:subClassOf [ a rdfs:Resource,
                 owl:Restriction ;
+            owl:onProperty :hasFeature ;
+            owl:someValuesFrom :Feature ],
+        [ a rdfs:Resource,
+                owl:Restriction ;
             owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
             owl:onClass :Feature ;
             owl:onProperty :hasFeature ],
-        [ a rdfs:Resource,
-                owl:Restriction ;
-            owl:onProperty :hasFeature ;
-            owl:someValuesFrom :Feature ],
         [ a rdfs:Resource,
                 owl:Restriction ;
             owl:onProperty :inChildOf ;
@@ -114,12 +114,12 @@
             owl:someValuesFrom :Feature ],
         [ a rdfs:Resource,
                 owl:Restriction ;
-            owl:onProperty :restriction ;
-            owl:someValuesFrom owl:Thing ],
-        [ a rdfs:Resource,
-                owl:Restriction ;
             owl:onProperty :subject ;
             owl:someValuesFrom :Feature ],
+        [ a rdfs:Resource,
+                owl:Restriction ;
+            owl:onProperty :restriction ;
+            owl:someValuesFrom owl:Thing ],
         :Identified,
         owl:Thing ;
     sh:property :Constraint-object,
@@ -142,8 +142,8 @@
                             rdf:first [ a rdfs:Resource ;
                                     xsd:minInclusive 0 ] ;
                             rdf:rest () ] ] ],
-        _:N674a3e8a65b748698641587003887636,
-        _:Ne92c02da0b094e05a8af34ca7ae2baa2,
+        _:Nbb51c16b10f449109a7fabef27824c27,
+        _:Ne09117991eea4ba2a3b16d676685e204,
         :Identified,
         :Location,
         owl:Thing ;
@@ -155,8 +155,8 @@
         owl:Class,
         sh:NodeShape ;
     rdfs:label "EntireSequence"^^xsd:string ;
-    rdfs:subClassOf _:N674a3e8a65b748698641587003887636,
-        _:Ne92c02da0b094e05a8af34ca7ae2baa2,
+    rdfs:subClassOf _:Nbb51c16b10f449109a7fabef27824c27,
+        _:Ne09117991eea4ba2a3b16d676685e204,
         :Identified,
         :Location,
         owl:Thing ;
@@ -167,7 +167,7 @@
         owl:Class,
         sh:NodeShape ;
     rdfs:label "Experiment"^^xsd:string ;
-    rdfs:subClassOf _:Nf5a648d8783749c1aada31263f1ba447,
+    rdfs:subClassOf _:Nf5ddc415597e4016983b7ab32c6b21fc,
         :Collection,
         :Identified,
         :TopLevel,
@@ -179,7 +179,7 @@
         owl:Class,
         sh:NodeShape ;
     rdfs:label "ExperimentalData"^^xsd:string ;
-    rdfs:subClassOf _:Nf5a648d8783749c1aada31263f1ba447,
+    rdfs:subClassOf _:Nf5ddc415597e4016983b7ab32c6b21fc,
         :Identified,
         :TopLevel,
         owl:Thing ;
@@ -230,7 +230,7 @@
         owl:Class,
         sh:NodeShape ;
     rdfs:label "Implementation"^^xsd:string ;
-    rdfs:subClassOf _:Nf5a648d8783749c1aada31263f1ba447,
+    rdfs:subClassOf _:Nf5ddc415597e4016983b7ab32c6b21fc,
         :Identified,
         :TopLevel,
         owl:Thing ;
@@ -282,8 +282,8 @@
         owl:Class,
         sh:NodeShape ;
     rdfs:label "Location"^^xsd:string ;
-    rdfs:subClassOf _:N674a3e8a65b748698641587003887636,
-        _:Ne92c02da0b094e05a8af34ca7ae2baa2,
+    rdfs:subClassOf _:Nbb51c16b10f449109a7fabef27824c27,
+        _:Ne09117991eea4ba2a3b16d676685e204,
         :Identified,
         owl:Thing ;
     sh:property :Location-hasSequence,
@@ -297,17 +297,17 @@
     rdfs:label "Model"^^xsd:string ;
     rdfs:subClassOf [ a rdfs:Resource,
                 owl:Restriction ;
-            owl:onProperty :source ;
+            owl:onProperty :framework ;
             owl:someValuesFrom owl:Thing ],
         [ a rdfs:Resource,
                 owl:Restriction ;
-            owl:onProperty :framework ;
+            owl:onProperty :source ;
             owl:someValuesFrom owl:Thing ],
         [ a rdfs:Resource,
                 owl:Restriction ;
             owl:onProperty :language ;
             owl:someValuesFrom owl:Thing ],
-        _:Nf5a648d8783749c1aada31263f1ba447,
+        _:Nf5ddc415597e4016983b7ab32c6b21fc,
         :Identified,
         :TopLevel,
         owl:Thing ;
@@ -338,18 +338,6 @@
     rdfs:label "Range"^^xsd:string ;
     rdfs:subClassOf [ a rdfs:Resource,
                 owl:Restriction ;
-            owl:onProperty :end ;
-            owl:someValuesFrom [ a rdfs:Datatype,
-                        rdfs:Resource ;
-                    rdfs:subClassOf rdfs:Literal ;
-                    owl:onDatatype xsd:integer ;
-                    owl:withRestrictions [ a rdfs:Resource ;
-                            rdf:first [ a rdfs:Resource ;
-                                    xsd:minInclusive 1 ] ;
-                            rdf:rest () ] ] ],
-        _:N674a3e8a65b748698641587003887636,
-        [ a rdfs:Resource,
-                owl:Restriction ;
             owl:onProperty :start ;
             owl:someValuesFrom [ a rdfs:Datatype,
                         rdfs:Resource ;
@@ -359,7 +347,19 @@
                             rdf:first [ a rdfs:Resource ;
                                     xsd:minInclusive 1 ] ;
                             rdf:rest () ] ] ],
-        _:Ne92c02da0b094e05a8af34ca7ae2baa2,
+        _:Nbb51c16b10f449109a7fabef27824c27,
+        _:Ne09117991eea4ba2a3b16d676685e204,
+        [ a rdfs:Resource,
+                owl:Restriction ;
+            owl:onProperty :end ;
+            owl:someValuesFrom [ a rdfs:Datatype,
+                        rdfs:Resource ;
+                    rdfs:subClassOf rdfs:Literal ;
+                    owl:onDatatype xsd:integer ;
+                    owl:withRestrictions [ a rdfs:Resource ;
+                            rdf:first [ a rdfs:Resource ;
+                                    xsd:minInclusive 1 ] ;
+                            rdf:rest () ] ] ],
         :Identified,
         :Location,
         owl:Thing ;
@@ -372,7 +372,7 @@
         owl:Class,
         sh:NodeShape ;
     rdfs:label "Sequence"^^xsd:string ;
-    rdfs:subClassOf _:Nf5a648d8783749c1aada31263f1ba447,
+    rdfs:subClassOf _:Nf5ddc415597e4016983b7ab32c6b21fc,
         :Identified,
         :TopLevel,
         owl:Thing ;
@@ -416,7 +416,7 @@
         owl:Class,
         sh:NodeShape ;
     rdfs:label "TopLevel"^^xsd:string ;
-    rdfs:subClassOf _:Nf5a648d8783749c1aada31263f1ba447,
+    rdfs:subClassOf _:Nf5ddc415597e4016983b7ab32c6b21fc,
         :Identified,
         owl:Thing ;
     sh:property :TopLevel-hasAttachment,
@@ -429,12 +429,12 @@
     rdfs:label "VariableFeature"^^xsd:string ;
     rdfs:subClassOf [ a rdfs:Resource,
                 owl:Restriction ;
-            owl:onProperty :variable ;
-            owl:someValuesFrom :Feature ],
-        [ a rdfs:Resource,
-                owl:Restriction ;
             owl:onProperty :cardinality ;
             owl:someValuesFrom :Cardinality ],
+        [ a rdfs:Resource,
+                owl:Restriction ;
+            owl:onProperty :variable ;
+            owl:someValuesFrom :Feature ],
         :Identified,
         owl:Thing ;
     sh:property :VariableFeature-cardinality,
@@ -1829,18 +1829,18 @@ owl:Thing a rdfs:Resource .
 
 1 a rdfs:Resource .
 
-_:N674a3e8a65b748698641587003887636 a rdfs:Resource,
-        owl:Restriction ;
-    owl:onProperty :hasSequence ;
-    owl:someValuesFrom :Sequence .
-
-_:Ne92c02da0b094e05a8af34ca7ae2baa2 a rdfs:Resource,
+_:Nbb51c16b10f449109a7fabef27824c27 a rdfs:Resource,
         owl:Restriction ;
     owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
     owl:onClass :Sequence ;
     owl:onProperty :hasSequence .
 
-_:Nf5a648d8783749c1aada31263f1ba447 a rdfs:Resource,
+_:Ne09117991eea4ba2a3b16d676685e204 a rdfs:Resource,
+        owl:Restriction ;
+    owl:onProperty :hasSequence ;
+    owl:someValuesFrom :Sequence .
+
+_:Nf5ddc415597e4016983b7ab32c6b21fc a rdfs:Resource,
         owl:Restriction ;
     owl:onProperty :hasNamespace ;
     owl:someValuesFrom owl:Thing .

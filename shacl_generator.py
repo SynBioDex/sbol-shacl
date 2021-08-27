@@ -42,6 +42,19 @@ def init_logging(debug=False):
     logging.basicConfig(format=msg_format, datefmt=date_format, level=level)
 
 
+def load_owl(owl_path):
+    # Round trip the OWL file through rdflib so that the default prefix
+    # gets turned into a labeled prefix, "sbol:".
+    owl_graph = rdflib.Graph()
+    owl_format = rdflib.util.guess_format(owl_path)
+    logging.debug('Loading SBOL3 ontology from %s', owl_path)
+    owl_graph.parse(owl_path, format=owl_format)
+    tmp_rdf = owl_graph.serialize(format=owl_format)
+    owl_graph = rdflib.Graph()
+    owl_graph.parse(data=tmp_rdf, format=owl_format)
+    return owl_graph
+
+
 def main(argv=None):
     args = parse_args(argv)
     init_logging(args.debug)
@@ -53,16 +66,13 @@ def main(argv=None):
                       format=rdflib.util.guess_format(OWL2SH))
 
     # Load the OWL file
-    owl_graph = rdflib.Graph()
-    owl_format = rdflib.util.guess_format(args.input)
-    logging.debug('Loading SBOL3 ontology from %s', args.input)
-    owl_graph.parse(args.input, format=owl_format)
+    owl_graph = load_owl(args.input)
     logging.debug('Generating SHACL rules')
     result = pyshacl.validate(owl_graph,
                               shacl_graph=rules_graph,
                               ont_graph=None,
                               inference='rdfs',
-                              abort_on_error=False,
+                              abort_on_first=False,
                               meta_shacl=False,
                               advanced=True,
                               debug=True,
@@ -80,7 +90,7 @@ def main(argv=None):
         logging.debug(f'Writing SHACL rules to {args.output.name}')
     else:
         logging.debug('Writing SHACL rules')
-    args.output.write(output.decode('utf8'))
+    args.output.write(output)
     logging.debug(f'Done.')
 
 

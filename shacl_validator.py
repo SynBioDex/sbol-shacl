@@ -37,7 +37,7 @@ class ShaclValidator:
         conforms, results_graph, results_text = \
             validate(self.g, shacl_graph=None, ont_graph=None,
                      # inference='rdfs',
-                     abort_on_error=False, meta_shacl=False,
+                     abort_on_first=False, meta_shacl=False,
                      advanced=True, debug=False)
 
         if conforms:

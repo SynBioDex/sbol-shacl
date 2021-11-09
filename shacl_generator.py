@@ -17,7 +17,7 @@ OWL2SH = urljoin(GITHUB_RAW,
 # ---------------
 # Default to canonical SBOL3 Ontology. Users can override the
 # ontology on the command line.
-SBOL3_OWL = urljoin(GITHUB_RAW, 'SynBioDex/sbol-owl3/main/sbolowl3.rdf')
+SBOL3_OWL = urljoin(GITHUB_RAW, 'SynBioDex/sbol-owl3/feature/sbolcomposition/sbolowl3.rdf')
 
 
 def parse_args(args=None):

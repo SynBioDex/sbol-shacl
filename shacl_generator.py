@@ -1,7 +1,7 @@
 import argparse
 import logging
-import sys
 from urllib.parse import urljoin
+import shutil
 
 import pyshacl
 import rdflib
@@ -28,7 +28,7 @@ def parse_args(args=None):
                         default=SBOL3_OWL)
     parser.add_argument('-d', '--debug', action='store_true')
     parser.add_argument('-o', '--output', type=argparse.FileType('w'),
-                        default=sys.stdout, metavar='SHACL_RULE_FILE')
+                        default='sbol3-shapes.ttl', metavar='SHACL_RULE_FILE')
     args = parser.parse_args(args)
     return args
 
@@ -62,8 +62,10 @@ def main(argv=None):
     # Load the owl-to-shacl rules file
     rules_graph = rdflib.Graph()
     logging.debug('Loading owl to shacl rules from %s', OWL2SH)
-    rules_graph.parse(OWL2SH,
-                      format=rdflib.util.guess_format(OWL2SH))
+    #rules_graph.parse(OWL2SH,
+    #                  format=rdflib.util.guess_format(OWL2SH))
+    rules_graph.parse('owl2sh-sbol-closure.ttl',
+                      format=rdflib.util.guess_format('owl2sh-sbol-closure.ttl'))
 
     # Load the OWL file
     owl_graph = load_owl(args.input)
@@ -91,6 +93,8 @@ def main(argv=None):
     else:
         logging.debug('Writing SHACL rules')
     args.output.write(output)
+    shutil.copyfile(args.output.name, f'../pySBOL3/sbol3/rdf/{args.output.name}')
+    print(args.output.name)
     logging.debug(f'Done.')
 
 

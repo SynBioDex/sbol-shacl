@@ -1,7 +1,6 @@
 import argparse
 import logging
 from urllib.parse import urljoin
-import shutil
 
 import pyshacl
 import rdflib
@@ -92,9 +91,6 @@ def main(argv=None):
         logging.debug(f'Writing SHACL rules to {args.output.name}')
     else:
         logging.debug('Writing SHACL rules')
-    args.output.write(output)
-    shutil.copyfile(args.output.name, f'../pySBOL3/sbol3/rdf/{args.output.name}')
-    print(args.output.name)
     logging.debug(f'Done.')
 
 

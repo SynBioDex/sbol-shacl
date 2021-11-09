@@ -16,7 +16,8 @@ OWL2SH = urljoin(GITHUB_RAW,
 # ---------------
 # Default to canonical SBOL3 Ontology. Users can override the
 # ontology on the command line.
-SBOL3_OWL = urljoin(GITHUB_RAW, 'SynBioDex/sbol-owl3/feature/sbolcomposition/sbolowl3.rdf')
+SBOL3_OWL = urljoin(GITHUB_RAW,
+                    'SynBioDex/sbol-owl3/feature/sbolcomposition/sbolowl3.rdf')
 
 
 def parse_args(args=None):
@@ -61,8 +62,6 @@ def main(argv=None):
     # Load the owl-to-shacl rules file
     rules_graph = rdflib.Graph()
     logging.debug('Loading owl to shacl rules from %s', OWL2SH)
-    #rules_graph.parse(OWL2SH,
-    #                  format=rdflib.util.guess_format(OWL2SH))
     rules_graph.parse('owl2sh-sbol-closure.ttl',
                       format=rdflib.util.guess_format('owl2sh-sbol-closure.ttl'))
 

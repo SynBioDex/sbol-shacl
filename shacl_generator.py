@@ -8,10 +8,15 @@ import rdflib
 
 GITHUB_RAW = 'https://raw.githubusercontent.com/'
 
-# We use the semi-closed version of owl2sh. owl2sh-open and
+# We used to use the semi-closed version of owl2sh. owl2sh-open and
 # owl2sh-closed do not work well for SBOL3.
-OWL2SH = urljoin(GITHUB_RAW,
-                 '/sparna-git/owl2shacl/main/owl2sh-semi-closed.ttl')
+# OWL2SH = urljoin(GITHUB_RAW,
+#                  '/sparna-git/owl2shacl/main/owl2sh-semi-closed.ttl')
+
+# We have switched to using our own custom OWL-to-SHACL converter.
+# This is based on owl2sh-semi-closed.ttl above.
+# See https://github.com/SynBioDex/sbol-shacl/issues/19
+OWL2SH = 'owl2sh-sbol-closure.ttl'
 
 # SBOL 3 Ontology
 # ---------------
@@ -62,8 +67,8 @@ def main(argv=None):
     # Load the owl-to-shacl rules file
     rules_graph = rdflib.Graph()
     logging.debug('Loading owl to shacl rules from %s', OWL2SH)
-    rules_graph.parse('owl2sh-sbol-closure.ttl',
-                      format=rdflib.util.guess_format('owl2sh-sbol-closure.ttl'))
+    rules_graph.parse(OWL2SH,
+                      format=rdflib.util.guess_format(OWL2SH))
 
     # Load the OWL file
     owl_graph = load_owl(args.input)

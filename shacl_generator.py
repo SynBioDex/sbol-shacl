@@ -1,5 +1,6 @@
 import argparse
 import logging
+import sys
 from urllib.parse import urljoin
 
 import pyshacl
@@ -28,7 +29,7 @@ def parse_args(args=None):
                         default=SBOL3_OWL)
     parser.add_argument('-d', '--debug', action='store_true')
     parser.add_argument('-o', '--output', type=argparse.FileType('w'),
-                        default='sbol3-shapes.ttl', metavar='SHACL_RULE_FILE')
+                        default=sys.stdout, metavar='SHACL_RULE_FILE')
     args = parser.parse_args(args)
     return args
 

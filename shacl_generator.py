@@ -90,6 +90,7 @@ def main(argv=None):
         logging.debug(f'Writing SHACL rules to {args.output.name}')
     else:
         logging.debug('Writing SHACL rules')
+    args.output.write(output)
     logging.debug(f'Done.')
 
 
